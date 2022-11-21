@@ -649,7 +649,7 @@ function App() {
                     <div id="example-collapse-text">
                       {
                         <div>
-                          <RuntimeSelector onClick={runtimeSelect} />
+                          <RuntimeSelector onChange={runtimeSelect} />
                           {showSpinner ? (
                             <Spinner animation="border" variant="warning" />
                           ) : (
@@ -789,7 +789,7 @@ function App() {
                 </Form>
                 {
                   <div>
-                    <RuntimeSelector onClick={runtimeSelect} />
+                    <RuntimeSelector onChange={runtimeSelect} />
                     {showSpinner ? (
                       <Spinner animation="border" variant="warning" />
                     ) : (

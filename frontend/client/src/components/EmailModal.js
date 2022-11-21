@@ -16,9 +16,7 @@ const EmailModal = (props) => {
         </Modal.Header>
         <Modal.Body>
           <InputGroup size="mb-3" className="mb-3" id="emailModal">
-            <InputGroup.Prepend>
-              <InputGroup.Text>Email</InputGroup.Text>
-            </InputGroup.Prepend>
+            <InputGroup.Text>Email</InputGroup.Text>
             <FormControl
               value={emailAddress}
               onChange={(e) => setEmailAddress(e.target.value)}

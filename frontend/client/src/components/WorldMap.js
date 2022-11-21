@@ -2,13 +2,13 @@ import React from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 
 const WorldMap = (props) => {
-  function onMapClick(area) {
+  const onMapClick = (area) => {
     if (props.selected !== area) {
       props.onSelect(area);
     }
   }
 
-  function getClassname(area) {
+  const getClassname = (area) => {
     if (area.indexOf("af") !== -1 || area.indexOf("oc") !== -1) {
       return "map-unavailable";
     }
@@ -24,7 +24,7 @@ const WorldMap = (props) => {
   }
 
   return (
-    <div className="row">
+    <div>
       <svg
         className="map-img"
         xmlns="http://www.w3.org/2000/svg"
@@ -65,12 +65,12 @@ const WorldMap = (props) => {
           placement="left"
           overlay={
             <Popover id="popover-basic" className="customPopover">
-              <Popover.Title as="h3">South America</Popover.Title>
-              <Popover.Content>
+              <Popover.Header as="h3">South America</Popover.Header>
+              <Popover.Body>
                 <strong>Location:</strong> São Paolo
                 <br />
                 <strong>Status:</strong> 🟢 online
-              </Popover.Content>
+              </Popover.Body>
             </Popover>
           }
         >
@@ -132,12 +132,12 @@ const WorldMap = (props) => {
           placement="bottom"
           overlay={
             <Popover id="popover-basic" className="customPopover">
-              <Popover.Title as="h3">Europe</Popover.Title>
-              <Popover.Content>
+              <Popover.Header as="h3">Europe</Popover.Header>
+              <Popover.Body>
                 <strong>Location:</strong> Germany / Nuremberg
                 <br />
                 <strong>Status:</strong> 🟢 online
-              </Popover.Content>
+              </Popover.Body>
             </Popover>
           }
         >
@@ -227,12 +227,12 @@ const WorldMap = (props) => {
           placement="right"
           overlay={
             <Popover id="popover-basic" className="customPopover">
-              <Popover.Title as="h3">Asia</Popover.Title>
-              <Popover.Content>
+              <Popover.Header as="h3">Asia</Popover.Header>
+              <Popover.Body>
                 <strong>Location:</strong> Singapore
                 <br />
                 <strong>Status:</strong> 🟢 online
-              </Popover.Content>
+              </Popover.Body>
             </Popover>
           }
         >
@@ -378,12 +378,12 @@ const WorldMap = (props) => {
           placement="left"
           overlay={
             <Popover id="popover-basic" className="customPopover">
-              <Popover.Title as="h3">North America</Popover.Title>
-              <Popover.Content>
+              <Popover.Header as="h3">North America</Popover.Header>
+              <Popover.Body>
                 <strong>Location:</strong> New York City
                 <br />
                 <strong>Status:</strong> 🟢 online
-              </Popover.Content>
+              </Popover.Body>
             </Popover>
           }
         >

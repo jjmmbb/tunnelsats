@@ -109,7 +109,7 @@ a:active {
 }
 
 .btn_:active {
-  background: #aaaaaa;
+  background: #ffc700;
 }
 
 #paid_button {
@@ -176,17 +176,6 @@ title {
   text-align: center;
 }
 
-/*
-#countryselector {
-  width: 100%;
-  margin: 10px 0 10px 0;
-  padding: 2px;
-}
-#countryselector label {
-  width: 20%;
-}
-*/
-
 
 #runtimeselector {
   width: 100%;
@@ -194,16 +183,12 @@ title {
 }
 #runtimeselector label {
   text-align: center;
-  width: 25%;
+  width: 20%;
+  background-color: #444444;
+  border-color: #444444;
 }
-#runtimeselector label.btn.active {
+#runtimeselector label.btn_:active {
   background-color: #ffc700;
-  color: black;
-}
-
-#countryselector label.btn.active {
-  background-color: #ffc700;
-  color: black;
 }
 
 
