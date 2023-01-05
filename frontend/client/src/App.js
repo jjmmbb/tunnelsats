@@ -558,7 +558,7 @@ function App() {
                       updatePrice(REACT_APP_THREE_MONTHS);
                     }}
                   >
-                    <IoIosRefresh size={20} /> Extend Ticket
+                    <IoIosRefresh size={20} /> Extend Subscription
                   </Button>
                 ) : (
                   <Button
@@ -569,25 +569,9 @@ function App() {
                       updatePrice(REACT_APP_THREE_MONTHS);
                     }}
                   >
-                    <IoIosAddCircle size={20} /> New Ticket
+                    <IoIosAddCircle size={20} /> New Subscription
                   </Button>
                 )}{" "}
-                <Button
-                  href="https://tunnelsats.github.io/tunnelsats"
-                  variant="secondary"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <IoIosSchool size={20} /> Guide
-                </Button>{" "}
-                <Button
-                  href="https://tunnelsats.github.io/tunnelsats/FAQ.html"
-                  variant="secondary"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <IoIosHelpCircle size={20} /> FAQ
-                </Button>{" "}
                 <Button
                   href="https://status.tunnelsats.com"
                   variant="secondary"
@@ -601,7 +585,7 @@ function App() {
               {isRenewSub ? (
                 <>
                   <hr />
-                  <p className="price">Connected to continent:</p>
+                  <p className="price"><strong>Connected to continent:</strong></p>
                   {/* WorldMap */}
                   <WorldMap
                     selected={country}
@@ -782,7 +766,7 @@ function App() {
               ) : (
                 <>
                   <hr />
-                  <p className="price">Select your continent:</p>
+                  <p className="price"><strong>Select your continent:</strong></p>
                   {/* WorldMap */}
                   <WorldMap
                     selected={country}
@@ -809,7 +793,7 @@ function App() {
                                 <Popover.Content>
                                   <strong>
                                     <center>
-                                      WireGuard keys are strictly generated within
+                                      WireGuard keys are exclusively generated within
                                       your browser!
                                     </center>
                                   </strong>
@@ -1001,15 +985,6 @@ function App() {
                       rel="noreferrer"
                     >
                       <span class="icon icon-heart"></span>
-                    </a>
-                  </Col>
-                  <Col>
-                    <a
-                      href="mailto:info@tunnelsats.com"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <span class="icon icon-mail"></span>
                     </a>
                   </Col>
                   <Col>

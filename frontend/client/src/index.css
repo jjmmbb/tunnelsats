@@ -300,14 +300,6 @@ button.close {
 }
 */
 
-.icon-mail {
-  background-image: url("./media/mail-128.png");
-  opacity: 0.5;
-}
-.icon-mail:hover {
-  background-image: url("./media/mail-128.png");
-  opacity: 1;
-}
 .icon-nostr {
   background-image: url("./media/nostr-128.png");
   opacity: 0.5;
