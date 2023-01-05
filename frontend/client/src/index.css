@@ -287,6 +287,9 @@ button.close {
 .footer-commit a:active {
   color: #666666;
 }
+.footer-commit a:link {
+  color: #666666;
+}
 
 .icon {
   display: inline-block;
