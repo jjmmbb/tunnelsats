@@ -39,54 +39,28 @@ const HeaderInfo = (props) => {
           </a>{" "}
           pages.
         </p>
-        {/*
-        <p>
-          <b className="warning">
-            ⚠️ Server switch required for EU users on de2.tunnelsats.com! ⚠️
-            <br></br>If you are connected to this VPN, please switch from
-            de2.tunnelsats.com to de3.tunnelsats.com. Here is how to easily get
-            there:{" "}
-            <a
-              href="https://tunnelsats.github.io/tunnelsats/FAQ.html#phasing-out-de2tunnelsatscom---how-to-switch-to-de3tunnelsatscom"
-              target="_blank"
-              rel="noreferrer"
-            >
-              migration guide
-            </a>
-          </b>
-        </p>
-        */}
         <hr />
         <p className="price">
           <strong>Lightning Node Statistics</strong>
         </p>
         <Row>
           <Col>
-            <TbSum size={20} title="total" />
-            <br />
+            <TbSum size={20} title="total" />{" "}
             <CountUp end={props.stats[0]} duration={4.0} className="price" />
           </Col>
           <Col>
-            <FaNetworkWired size={20} title="clearnet" />
-            <br />
+            <FaNetworkWired size={20} title="clearnet" />{"  "}
             <CountUp end={props.stats[1]} duration={3.0} className="price" />
           </Col>
           <Col>
-            <IoGitNetworkSharp size={20} title="hybrid" />
-            <br />
+            <IoGitNetworkSharp size={20} title="hybrid" />{" "}
             <CountUp end={props.stats[2]} duration={2.5} className="price" />
           </Col>
           <Col>
-            <SiTorproject size={20} title="Tor" />
-            <br />
+            <SiTorproject size={20} title="Tor" />{" "}
             <CountUp end={props.stats[3]} duration={3.5} className="price" />
           </Col>
         </Row>
-        {/*
-        <p className="mb-0">
-          WireGuard keys are generated exclusively within the browser!
-        </p>
-        */}
       </Alert>
     </div>
   );

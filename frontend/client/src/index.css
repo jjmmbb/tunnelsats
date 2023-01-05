@@ -265,11 +265,27 @@ button.close {
 .footer-text {
   text-align: center;
   color: #000000;
-  margin: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 0px;
 }
-
-.footer-text a {
-  color: black;
+.footer-commit {
+  text-align: right;
+  color: #666666;
+  font-size: 10;
+}
+.footer-commit a {
+  color: #666666;
+}
+.footer-commit a:hover {
+  color: #666666;
+}
+.footer-commit a:visited {
+  color: #666666;
+}
+.footer-commit a:active {
+  color: #666666;
 }
 
 .icon {
@@ -283,6 +299,15 @@ button.close {
   background-image: url("./media/sats-orange.png");
 }
 */
+
+.icon-mail {
+  background-image: url("./media/mail-128.png");
+  opacity: 0.5;
+}
+.icon-mail:hover {
+  background-image: url("./media/mail-128.png");
+  opacity: 1;
+}
 .icon-nostr {
   background-image: url("./media/nostr-128.png");
   opacity: 0.5;

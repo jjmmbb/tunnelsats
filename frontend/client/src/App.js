@@ -4,12 +4,13 @@ import {
   Container,
   Button,
   Nav,
-  Navbar,
-  NavDropdown,
   Spinner,
   Collapse,
   Form,
   InputGroup,
+  Tooltip,
+  Popover,
+  OverlayTrigger,
   //Toast,
 } from "react-bootstrap";
 import io from "socket.io-client";
@@ -27,6 +28,10 @@ import WorldMap from "./components/WorldMap";
 import {
   IoIosRefresh,
   IoIosInformationCircleOutline,
+  IoIosAddCircle,
+  IoIosSchool,
+  IoIosHelpCircle,
+  IoIosPulse,
 } from "react-icons/io";
 import "./wireguard.js";
 
@@ -530,134 +535,7 @@ function App() {
       </div>
           */}
       <div>
-        <Container>
-          {/* Navigation Bar */}
-          <Navbar variant="dark" expanded="true">
-            <Navbar.Brand>Tunnel⚡️Sats</Navbar.Brand>
-
-            {/* non-mobile view */}
-            {width > 1000 ? (
-              <>
-                <Nav className="mr-auto">
-                  {!isRenewSub ? (
-                    <Nav.Link
-                      href="#"
-                      onClick={() => {
-                        showRenew();
-                        updatePrice(REACT_APP_THREE_MONTHS);
-                      }}
-                    >
-                      Renew Subscription
-                    </Nav.Link>
-                  ) : (
-                    <Nav.Link
-                      href="#"
-                      onClick={() => {
-                        hideRenew();
-                        updatePrice(REACT_APP_THREE_MONTHS);
-                      }}
-                    >
-                      Get Subscription
-                    </Nav.Link>
-                  )}
-                  <Nav.Link
-                    href="https://tunnelsats.github.io/tunnelsats"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Guide
-                  </Nav.Link>
-                  <Nav.Link
-                    href="https://tunnelsats.github.io/tunnelsats/FAQ.html"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    FAQ
-                  </Nav.Link>
-                  <Nav.Link
-                    href="https://status.tunnelsats.com"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Server Status 🚨
-                  </Nav.Link>
-                  {/*
-      <Nav.Link>
-      <strong>⚡️ Black Friday Special 20% Off ⚡️</strong>
-      </Nav.Link>
-    */}
-
-                  {/*}
-      <Nav>
-      <Button onClick={() => renderLoginModal()} variant="outline-info">Login</Button>
-      <LoginModal show={isLoginModal} handleClose={hideLoginModal} />
-      </Nav>
-    */}
-                </Nav>
-              </>
-            ) : (
-              <Nav className="mr-auto">
-                <NavDropdown
-                  title="Menu"
-                  id="basic-nav-dropdown"
-                >
-                  {!isRenewSub ? (
-                    <NavDropdown.Item
-                      href="#"
-                      onClick={() => {
-                        showRenew();
-                        updatePrice(REACT_APP_THREE_MONTHS);
-                      }}
-                    >
-                      Renew Subscription
-                    </NavDropdown.Item>
-                  ) : (
-                    <NavDropdown.Item
-                      href="#"
-                      onClick={() => {
-                        hideRenew();
-                        updatePrice(REACT_APP_THREE_MONTHS);
-                      }}
-                    >
-                      Get Subscription
-                    </NavDropdown.Item>
-                  )}
-                  <NavDropdown.Item
-                    href="https://tunnelsats.github.io/tunnelsats"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Guide
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    href="https://tunnelsats.github.io/tunnelsats/FAQ.html"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    FAQ
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item
-                    href="https://status.tunnelsats.com"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Server Status 🚨
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </Nav>
-            )}
-            <Nav className="mr-right">
-              <Nav.Link
-                href={`https://github.com/tunnelsats/tunnelsats/commit/${commitHash}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                latest commit: {commitHash?.substring(0, 7)}
-              </Nav.Link>
-            </Nav>
-          </Navbar>
-        </Container>
+        <br />
 
         <Popup />
 
@@ -669,6 +547,56 @@ function App() {
 
               {/* Intro Text */}
               <HeaderInfo stats={nodeStats} />
+              <hr />
+              <div className="justify-content-center">
+                {!isRenewSub ? (
+                  <Button
+                    href="#"
+                    variant="secondary"
+                    onClick={() => {
+                      showRenew();
+                      updatePrice(REACT_APP_THREE_MONTHS);
+                    }}
+                  >
+                    <IoIosRefresh size={20} /> Extend Ticket
+                  </Button>
+                ) : (
+                  <Button
+                    href="#"
+                    variant="secondary"
+                    onClick={() => {
+                      hideRenew();
+                      updatePrice(REACT_APP_THREE_MONTHS);
+                    }}
+                  >
+                    <IoIosAddCircle size={20} /> New Ticket
+                  </Button>
+                )}{" "}
+                <Button
+                  href="https://tunnelsats.github.io/tunnelsats"
+                  variant="secondary"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <IoIosSchool size={20} /> Guide
+                </Button>{" "}
+                <Button
+                  href="https://tunnelsats.github.io/tunnelsats/FAQ.html"
+                  variant="secondary"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <IoIosHelpCircle size={20} /> FAQ
+                </Button>{" "}
+                <Button
+                  href="https://status.tunnelsats.com"
+                  variant="secondary"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <IoIosPulse size={20} /> Server Status
+                </Button>
+              </div>
 
               {isRenewSub ? (
                 <>
@@ -867,7 +795,32 @@ function App() {
                     {/* else default: WG keys for first subscription */}
                     <Form.Group className="mb-2">
                       <InputGroup>
-                        <InputGroup.Text>Private Key</InputGroup.Text>
+                        <InputGroup.Text>
+                          Private Key
+                          <OverlayTrigger
+                            trigger="hover"
+                            key="top"
+                            placement="top"
+                            overlay={
+                              <Popover
+                                id="popover-basic"
+                                className="customPopover"
+                              >
+                                <Popover.Content>
+                                  <strong>
+                                    <center>
+                                      WireGuard keys are strictly generated within
+                                      your browser!
+                                    </center>
+                                  </strong>
+                                </Popover.Content>
+                              </Popover>
+                            }
+                          >
+                            <IoIosInformationCircleOutline size={15} />
+                          </OverlayTrigger>
+                        </InputGroup.Text>
+
                         <Form.Control
                           disabled
                           key={keyPair.privateKey}
@@ -1011,18 +964,9 @@ function App() {
                 />
               ) : null}
 
-              {/* Footer */}
+              {/* Modal Footer */}
               <div className="footer-text">
                 <Row>
-                  <Col>
-                    <a
-                      href="https://twitter.com/TunnelSats"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <span class="icon icon-twitter"></span>
-                    </a>
-                  </Col>
                   <Col>
                     <a
                       href="https://github.com/tunnelsats/tunnelsats"
@@ -1030,6 +974,15 @@ function App() {
                       rel="noreferrer"
                     >
                       <span class="icon icon-github"></span>
+                    </a>
+                  </Col>
+                  <Col>
+                    <a
+                      href="https://twitter.com/TunnelSats"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span class="icon icon-twitter"></span>
                     </a>
                   </Col>
                   <Col>
@@ -1052,6 +1005,15 @@ function App() {
                   </Col>
                   <Col>
                     <a
+                      href="mailto:info@tunnelsats.com"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span class="icon icon-mail"></span>
+                    </a>
+                  </Col>
+                  <Col>
+                    <a
                       href="https://t.me/+NJylaUom-rxjYjU6"
                       target="_blank"
                       rel="noreferrer"
@@ -1061,6 +1023,15 @@ function App() {
                   </Col>
                 </Row>
               </div>
+              <Row className="footer-commit">
+                <Nav.Link
+                  href={`https://github.com/tunnelsats/tunnelsats/commits/main`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {commitHash?.substring(0, 7)}
+                </Nav.Link>
+              </Row>
             </Col>
           </Row>
         </Container>
