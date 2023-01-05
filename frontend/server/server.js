@@ -519,16 +519,11 @@ io.on("connection", (socket) => {
   // getCountryToDNS
   socket.on("getCountryToDNS", (country) => {
     logDim(`getCountryToDNS id: ${socket.id}`);
-    getServer(country)
+    const dns = getServer(country)
     .replace(/^https?:\/\//, "")
-    .replace(/\/manager\/$/, "")
-    .then((result) => {
-        io.to(socket.id).emit("receiveCountryToDNS", result);
-        logDim(`getCountryToDNS result: ${result}`);        
-      })
-      .catch((error) => {
-        return error;
-      })
+    .replace(/\/manager\/$/, "");
+    io.to(socket.id).emit("receiveCountryToDNS", dns);
+    logDim(`getCountryToDNS result: ${dns}`);        
   });
 
   // getPrice
