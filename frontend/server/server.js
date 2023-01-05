@@ -516,6 +516,21 @@ io.on("connection", (socket) => {
     );
   });
 
+  // getCountryToDNS
+  socket.on("getCountryToDNS", (country) => {
+    logDim(`getCountryToDNS id: ${socket.id}`);
+    getServer(country)
+    .replace(/^https?:\/\//, "")
+    .replace(/\/manager\/$/, "")
+    .then((result) => {
+        io.to(socket.id).emit("receiveCountryToDNS", result);
+        logDim(`getCountryToDNS result: ${result}`);        
+      })
+      .catch((error) => {
+        return error;
+      })
+  });
+
   // getPrice
   socket.on("getPrice", () => {
     logDim(`getPrice() id: ${socket.id}`);

@@ -88,6 +88,7 @@ function App() {
 
   // World Map
   const [country, updateCountry] = useState("eu2");
+  const [countryToDNS, setCountryToDNS] = useState("");
 
   /* WorldMap Continent Codes
     AF = Africa
@@ -129,9 +130,6 @@ function App() {
   //const [showA, setShowA] = useState(true);
   //const toggleShowA = () => setShowA(!showA);
 
-  // get window size
-  const { height, width } = useWindowDimensions();
-
   //Successful payment alert
   const renderAlert = (show) => {
     setPaymentAlert(show);
@@ -167,6 +165,19 @@ function App() {
 
     // get latest commit hash
     getCommitHash();
+
+    //get DNS from selected country
+    getCountryToDNS();
+  });
+
+  // get current btc per dollar
+  const getCountryToDNS = (country) => {
+    socket.removeAllListeners("getCountryToDNS").emit("getCountryToDNS", country);
+  };
+
+  socket.off("receiveCountryToDNS").on("receiveCountryToDNS", (dns) => {
+    DEBUG && console.log(`${getDate()} App.js: server.getCountryToDNS(): ${dns}`);
+    setCountryToDNS(dns);
   });
 
   // get node stats from mempool.space
@@ -585,7 +596,9 @@ function App() {
               {isRenewSub ? (
                 <>
                   <hr />
-                  <p className="price"><strong>Connected to continent:</strong></p>
+                  <p className="price">
+                    <strong>Connected to continent:</strong>
+                  </p>
                   {/* WorldMap */}
                   <WorldMap
                     selected={country}
@@ -766,13 +779,18 @@ function App() {
               ) : (
                 <>
                   <hr />
-                  <p className="price"><strong>Select your continent:</strong></p>
+                  <p className="price">
+                    <strong>Select your continent:</strong>
+                  </p>
                   {/* WorldMap */}
                   <WorldMap
                     selected={country}
                     onSelect={updateCountry}
                     pointerEvents={"all"}
                   />
+                  <p className="price">
+                    <strong>Selected: {countryToDNS}</strong>
+                  </p>
                   <hr />
 
                   <Form>
@@ -793,8 +811,8 @@ function App() {
                                 <Popover.Content>
                                   <strong>
                                     <center>
-                                      WireGuard keys are exclusively generated within
-                                      your browser!
+                                      WireGuard keys are exclusively generated
+                                      within your browser!
                                     </center>
                                   </strong>
                                 </Popover.Content>
