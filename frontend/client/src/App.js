@@ -170,6 +170,12 @@ function App() {
     getCountryToDNS(country);
   });
 
+  // combine updateCountry and getCountryToDNS
+  const handleSelectedCountry = (country) => {
+    updateCountry(country);
+    getCountryToDNS(country);
+  };
+
   // get current btc per dollar
   const getCountryToDNS = (country) => {
     socket.removeAllListeners("getCountryToDNS").emit("getCountryToDNS", country);
@@ -785,7 +791,7 @@ function App() {
                   {/* WorldMap */}
                   <WorldMap
                     selected={country}
-                    onSelect={updateCountry}
+                    onSelect={(e) => handleSelectedCountry(e)}
                     pointerEvents={"all"}
                   />
                   <p className="price">
