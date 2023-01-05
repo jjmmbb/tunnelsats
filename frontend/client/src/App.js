@@ -167,7 +167,7 @@ function App() {
     getCommitHash();
 
     //get DNS from selected country
-    getCountryToDNS();
+    getCountryToDNS(country);
   });
 
   // get current btc per dollar

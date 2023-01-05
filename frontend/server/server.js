@@ -518,7 +518,7 @@ io.on("connection", (socket) => {
 
   // getCountryToDNS
   socket.on("getCountryToDNS", (country) => {
-    logDim(`getCountryToDNS id: ${socket.id}`);
+    logDim(`getCountryToDNS id: ${socket.id} - ${country}`);
     const dns = getServer(country)
     .replace(/^https?:\/\//, "")
     .replace(/\/manager\/$/, "");
