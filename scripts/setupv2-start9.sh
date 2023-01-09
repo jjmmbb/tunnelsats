@@ -799,15 +799,27 @@ systemctl daemon-reload >/dev/null
 if systemctl enable wg-quick@tunnelsatsv2 >/dev/null; then
 
   if [ $isDocker -eq 1 ] && [ -f /etc/systemd/system/umbrel-startup.service ]; then
+  
     if [ ! -d /etc/systemd/system/wg-quick@tunnelsatsv2.service.d ]; then
       mkdir /etc/systemd/system/wg-quick@tunnelsatsv2.service.d >/dev/null
     fi
-    echo "[Unit]
+
+    if [ $isEmbassy -eq 1 ]; then #Start9
+      echo "[Unit]
+Description=Forcing wg-quick to start after Start9 startup scripts
+# Make sure to start vpn after Start9 start up to have lnd containers available
+Requires=embassy-init.service
+After=embassy-init.service
+" >/etc/systemd/system/wg-quick@tunnelsatsv2.service.d/tunnelsatsv2.conf      
+    else # Umbrel
+      echo "[Unit]
 Description=Forcing wg-quick to start after umbrel startup scripts
 # Make sure to start vpn after umbrel start up to have lnd containers available
 Requires=umbrel-startup.service
 After=umbrel-startup.service
 " >/etc/systemd/system/wg-quick@tunnelsatsv2.service.d/tunnelsatsv2.conf
+    fi
+  
   fi
 
   systemctl daemon-reload >/dev/null

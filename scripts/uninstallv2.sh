@@ -9,7 +9,7 @@
 ##########UPDATE IF YOU MAKE A NEW RELEASE#############
 major=0
 minor=0
-patch=8
+patch=9
 
 # check if sudo
 if [ "$EUID" -ne 0 ]; then
@@ -51,12 +51,15 @@ done
 
 # Check if docker / non-docker
 isDocker=0
+isEmbassy=0
+
 while true; do
     read -p "What lightning node package are you running?: 
     1) RaspiBlitz
     2) Umbrel
     3) myNode
     4) RaspiBolt / Bare Metal
+    5) Start9
     > " answer
 
     case $answer in
@@ -88,7 +91,15 @@ while true; do
         break
         ;;
 
-    *) echo "Please enter a number from 1 to 4." ;;
+    5)
+        echo "> Start9"
+        echo
+        isDocker=1
+        isEmbassy=1
+        break
+        ;;
+
+    *) echo "Please enter a number from 1 to 5." ;;
     esac
 done
 
@@ -104,7 +115,12 @@ while true; do
         echo "Ensure lnd lightning process is stopped ..."
 
         if [ $isDocker -eq 1 ]; then
-            container=$(docker ps --format 'table {{.Image}} {{.Names}} {{.Ports}}' | grep 9735 | awk '{print $2}')
+            if [ $isEmbassy -eq 1 ]; then
+                container="lnd.embassy"
+            else
+                container=$(docker ps --format 'table {{.Image}} {{.Names}} {{.Ports}}' | grep 9735 | awk '{print $2}')
+            fi
+            
             if [ -n "$container" ]; then
                 if docker stop "$container" &>/dev/null; then
                     #try disconnecting network if present
@@ -193,7 +209,12 @@ while true; do
         echo "Ensure clightning process is stopped ..."
 
         if [ $isDocker -eq 1 ]; then
-            container=$(docker ps --format 'table {{.Image}} {{.Names}} {{.Ports}}' | grep 9735 | awk '{print $2}')
+            if [ $isEmbassy eq 1 ]; then
+                container="c-lightning.embassy"
+            else
+                container=$(docker ps --format 'table {{.Image}} {{.Names}} {{.Ports}}' | grep 9735 | awk '{print $2}')
+            fi
+
             if [ -n "$container" ]; then
                 if docker stop "$container" &>/dev/null; then
                     #try disconnecting network if present
@@ -252,6 +273,7 @@ while true; do
         if [ -f /mnt/hdd/app-data/.lightning/config ]; then path="/mnt/hdd/app-data/.lightning/config"; fi
         if [ -f "$HOME"/umbrel/app-data/core-lightning/data/lightningd/bitcoin/config ]; then path="$HOME""/umbrel/app-data/core-lightning/data/lightningd/bitcoin/config"; fi
         if [ -f /data/lightningd/config ]; then path="/data/lightningd/config"; fi
+        if [ -f /embassy-data/package-data/volumes/c-lightning/data/main/config ]; then path="/embassy-data/package-data/volumes/c-lightning/data/main/config"; fi
 
         if [ "$path" != "" ]; then
             check=$(grep -c "always-use-proxy=false\|always-use-proxy=0" "$path")
@@ -466,6 +488,19 @@ if [ $isDocker -eq 1 ] && [ -f /etc/systemd/system/umbrel-startup.service.d/tunn
     fi
 fi
 
+# remove killswitch requirement for Start9 startup
+if [ $isEmbassy -eq 1 ] && [ -f /etc/systemd/system/embassy-init.service.d/tunnelsats_killswitch.conf ]; then
+    echo "Removing tunnelsats_killswitch.conf..."
+    if rm /etc/systemd/system/embassy-init.service.d/tunnelsats_killswitch.conf; then
+        # rm -r /etc/systemd/system/embassy-init.service.d >/dev/null
+        echo "> /etc/systemd/system/embassy-init.service.d/tunnelsats_killswitch.conf  removed"
+        echo
+    else
+        echo "> ERR: could not remove /etc/systemd/system/embassy-init.service.d/tunnelsats_killswitch.conf. Please check manually."
+        echo
+    fi
+fi
+
 sleep 2
 
 # remove dependencies of blitzapi | must be removed after wg interface stopped
@@ -487,6 +522,7 @@ if [ -f /etc/systemd/system/blitzapi.service.d/tunnelsats-wg.conf ]; then
 fi
 
 sleep 2
+
 #reset lnd
 if [ $isDocker -eq 0 ] && [ -f /etc/systemd/system/lnd.service.bak ] && [ "$lnImplementation" == "lnd" ]; then
     if mv /etc/systemd/system/lnd.service.bak /etc/systemd/system/lnd.service; then
@@ -610,11 +646,17 @@ LND:   tor.skip-proxy-for-clearnet-targets=false"
 echo
 
 if [ $isDocker -eq 1 ]; then
-    echo "
-    Restart lightning container with
-    sudo ~/umbrel/scripts/stop (Umbrel-OS)
-    sudo ~/umbrel/scripts/start (Umbrel-OS)"
-    echo
+    if [ $isEmbassy -eq 1 ]; then # Start9
+        echo "
+        Please restart lightning service within Start9 GUI"
+        echo
+    else # Umbrel
+        echo "
+        Please restart lightning container with
+        sudo ~/umbrel/scripts/stop (Umbrel-OS)
+        sudo ~/umbrel/scripts/start (Umbrel-OS)"
+        echo
+    fi
 else
     echo "
     Restart lightning service with
