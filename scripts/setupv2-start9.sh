@@ -1044,10 +1044,14 @@ if [ $isDocker -eq 0 ]; then
     sudo systemctl restart ${serviceName}.service"
   echo
 else
-  echo "Restart ${lnImplementation} on Umbrel afterwards via the command:
-    sudo ~/umbrel/scripts/stop
-    sudo ~/umbrel/scripts/start"
-  echo
+  if [ $isEmbassy -eq 1 ]; then
+    echo "Please restart Start9 via WebGUI."
+  else
+    echo "Restart ${lnImplementation} on Umbrel afterwards via the command:
+      sudo ~/umbrel/scripts/stop
+      sudo ~/umbrel/scripts/start"
+    echo
+  fi
 fi
 
 # the end
