@@ -663,19 +663,15 @@ if [ $isDocker -eq 1 ]; then
   # create file
   echo "Creating tunnelsats-docker-network.sh file in /etc/wireguard/..."
 
-  # Start9 - using static container names
+  # Start9
   if [ $isEmbassy -eq 1 ] ; then
-    if [ $lnImplementation = "lnd" ]; then
-      lightningcontainer = "lnd.embassy"
-    elif [ $lnImplementation = "cln" ]; then
-      lightningcontainer = "c-lightning.embassy"
-    fi
     echo "#!/bin/sh
 set -e
+lightningcontainer=\$(docker ps --format 'table {{.Image}} {{.Names}} {{.Ports}}' | grep 9735 | awk '{print \$2}')
 checkdockernetwork=\$(docker network ls  2> /dev/null | grep -c \"docker-tunnelsats\")
 if [ \$checkdockernetwork -ne 0 ]; then
-  if ! docker inspect $lightningcontainer | grep -c \"tunnelsats\" > /dev/null; then
-  docker network connect --ip 172.18.9.9 docker-tunnelsats $lightningcontainer  > /dev/null
+  if ! docker inspect $\lightningcontainer | grep -c \"tunnelsats\" > /dev/null; then
+  docker network connect --ip 172.18.9.9 docker-tunnelsats $\lightningcontainer  > /dev/null
   fi
 fi" >/etc/wireguard/tunnelsats-docker-network.sh
   else
