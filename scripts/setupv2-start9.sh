@@ -664,7 +664,7 @@ if [ $isDocker -eq 1 ]; then
   echo "Creating tunnelsats-docker-network.sh file in /etc/wireguard/..."
 
   # Start9 - using static container names
-  if [ $isEmbassy -eq 1]; then
+  if [ $isEmbassy -eq 1] ; then
     if [ $lnImplementation = "lnd" ]; then
       lightningcontainer = "lnd.embassy"
     elif [ $lnImplementation = "cln" ]; then
