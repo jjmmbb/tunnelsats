@@ -507,7 +507,7 @@ if [ $isDocker -eq 1 ]; then
   #Get docker lnd/cln ip address
   # Start9
   if [ $isEmbassy -eq 1 ]; then
-    dockerlndip=$(host lnd.embassy | awk '{print $4}')
+    #dockerlndip=$(host lnd.embassy | awk '{print $4}')
     dockerlndip=${dockerlndip:-"172.18.0.4"}
   else
     # Umbrel
@@ -517,7 +517,7 @@ if [ $isDocker -eq 1 ]; then
 
   # Start9
   if [ $isEmbassy -eq 1 ]; then
-    dockerclnip=$(host c-lightning.embassy | awk '{print $4}')
+    #dockerclnip=$(host c-lightning.embassy | awk '{print $4}')
     dockerclnip=${dockerlndip:-"172.18.0.5"}
   else
     # Umbrel
@@ -664,7 +664,7 @@ if [ $isDocker -eq 1 ]; then
   echo "Creating tunnelsats-docker-network.sh file in /etc/wireguard/..."
 
   # Start9 - using static container names
-  if [ $isEmbassy -eq 1] ; then
+  if [ $isEmbassy -eq 1 ] ; then
     if [ $lnImplementation = "lnd" ]; then
       lightningcontainer = "lnd.embassy"
     elif [ $lnImplementation = "cln" ]; then
