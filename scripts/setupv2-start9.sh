@@ -328,7 +328,7 @@ if [ $isDocker -eq 1 ]; then
   checkdockernetwork=$(docker network ls 2>/dev/null | grep -c "docker-tunnelsats")
   #the subnet needs a bigger subnetmask (25) than the normal umbrel_mainet subnetmask of 24
   #otherwise the network will not be chosen as the gateway for outside connection
-  
+
   if [ $isEmbassy -eq 1 ]; then
     dockersubnet="172.18.9.0/25"
   else
@@ -495,11 +495,7 @@ fi
 
 sleep 2
 
-
-
 # [...non docker stuff...]
-
-
 
 #Creating Killswitch to prevent any leakage
 if [ $isDocker -eq 1 ]; then
@@ -522,7 +518,7 @@ if [ $isDocker -eq 1 ]; then
   # Start9
   if [ $isEmbassy -eq 1 ]; then
     dockerclnip=$(host c-lightning.embassy | awk '{print $4}')
-    dockerclnip=${dockerlndip:-"172.18.0.5"}   
+    dockerclnip=${dockerlndip:-"172.18.0.5"}
   else
     # Umbrel
     if [ -d "$HOME"/umbrel/app-data/core-lightning ]; then
@@ -539,13 +535,12 @@ if [ $isDocker -eq 1 ]; then
   else # Umbrel
     dockertunnelsatsip="10.9.9.9"
   fi
-  
+
   if [ -z "$dockerclnip" ]; then
     result="$dockerlndip"
   else
     result="${dockerlndip}, ${dockerclnip}"
   fi
-
 
   if [ -n "$mainif" ]; then
 
@@ -612,7 +607,8 @@ table ip tunnelsatsv2 {
     if [ $isEmbassy -eq 1]; then
       if [ ! -d /etc/systemd/system/embassy-init.service.d ]; then
         mkdir /etc/systemd/system/embassy-init.service.d >/dev/null
-    echo "[Unit]
+      fi
+        echo "[Unit]
 Description=Forcing wg-quick to start after Start9 startup scripts
 # Make sure kill switch is in place before starting embassy containers
 Requires=nftables.service
@@ -621,13 +617,13 @@ After=nftables.service
     else # Umbrel
       if [ ! -d /etc/systemd/system/umbrel-startup.service.d ]; then
         mkdir /etc/systemd/system/umbrel-startup.service.d >/dev/null
-            echo "[Unit]
+      fi
+        echo "[Unit]
 Description=Forcing wg-quick to start after umbrel startup scripts
 # Make sure kill switch is in place before starting umbrel containers
 Requires=nftables.service
 After=nftables.service
 " >/etc/systemd/system/umbrel-startup.service.d/tunnelsats_killswitch.conf
-      fi
     fi
 
     #Start nftables service
@@ -799,7 +795,7 @@ systemctl daemon-reload >/dev/null
 if systemctl enable wg-quick@tunnelsatsv2 >/dev/null; then
 
   if [ $isDocker -eq 1 ] && [ -f /etc/systemd/system/umbrel-startup.service ]; then
-  
+
     if [ ! -d /etc/systemd/system/wg-quick@tunnelsatsv2.service.d ]; then
       mkdir /etc/systemd/system/wg-quick@tunnelsatsv2.service.d >/dev/null
     fi
@@ -810,7 +806,7 @@ Description=Forcing wg-quick to start after Start9 startup scripts
 # Make sure to start vpn after Start9 start up to have lnd containers available
 Requires=embassy-init.service
 After=embassy-init.service
-" >/etc/systemd/system/wg-quick@tunnelsatsv2.service.d/tunnelsatsv2.conf      
+" >/etc/systemd/system/wg-quick@tunnelsatsv2.service.d/tunnelsatsv2.conf
     else # Umbrel
       echo "[Unit]
 Description=Forcing wg-quick to start after umbrel startup scripts
@@ -819,7 +815,7 @@ Requires=umbrel-startup.service
 After=umbrel-startup.service
 " >/etc/systemd/system/wg-quick@tunnelsatsv2.service.d/tunnelsatsv2.conf
     fi
-  
+
   fi
 
   systemctl daemon-reload >/dev/null
