@@ -604,7 +604,7 @@ table ip tunnelsatsv2 {
   if systemctl enable nftables >/dev/null && systemctl start nftables >/dev/null; then
 
     # Start9
-    if [ $isEmbassy -eq 1]; then
+    if [ $isEmbassy -eq 1 ]; then
       if [ ! -d /etc/systemd/system/embassy-init.service.d ]; then
         mkdir /etc/systemd/system/embassy-init.service.d >/dev/null
       fi
