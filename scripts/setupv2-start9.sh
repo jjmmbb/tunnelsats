@@ -330,7 +330,7 @@ if [ $isDocker -eq 1 ]; then
   #otherwise the network will not be chosen as the gateway for outside connection
   
   if [ $isEmbassy -eq 1 ]; then
-    dockersubnet="172.18.0.0/25"
+    dockersubnet="172.18.9.0/25"
   else
     dockersubnet="10.9.9.0/25"
   fi
