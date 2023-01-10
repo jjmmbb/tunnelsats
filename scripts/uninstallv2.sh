@@ -180,7 +180,7 @@ while true; do
         if [ -f "$HOME"/umbrel/lnd/lnd.conf ]; then path="$HOME""/umbrel/lnd/lnd.conf"; fi
         if [ -f "$HOME"/umbrel/app-data/lightning/data/lnd/lnd.conf ]; then path="$HOME""/umbrel/app-data/lightning/data/lnd/lnd.conf"; fi
         if [ -f /data/lnd/lnd.conf ]; then path="/data/lnd/lnd.conf"; fi
-        if [ -f /embassy-data/package-data/volumes/lnd/data/main/lnd.conf ]; then path="/embassy-data/package-data/volumes/lnd/data/main/lnd.conf"; fi
+        #if [ -f /embassy-data/package-data/volumes/lnd/data/main/lnd.conf ]; then path="/embassy-data/package-data/volumes/lnd/data/main/lnd.conf"; fi
         if [ -f /mnt/hdd/mynode/lnd/lnd.conf ]; then path="/mnt/hdd/mynode/lnd/lnd.conf"; fi
 
         if [ "$path" != "" ]; then
