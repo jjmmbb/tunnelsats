@@ -1045,7 +1045,7 @@ if [ $isDocker -eq 0 ]; then
   echo
 else
   if [ $isEmbassy -eq 1 ]; then
-    echo "Please restart Start9 via WebGUI."
+    echo "Please restart Lightning via Start9 WebGUI."
   else
     echo "Restart ${lnImplementation} on Umbrel afterwards via the command:
       sudo ~/umbrel/scripts/stop
