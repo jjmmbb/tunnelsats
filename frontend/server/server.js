@@ -32,8 +32,6 @@ const TIMERCLEANINGINVOICEDATA = 60 * 60000;
 const app = express();
 
 // helper
-const getDate = (timestamp) =>
-  (timestamp !== undefined ? new Date(timestamp) : new Date()).toISOString();
 function isEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
@@ -82,7 +80,7 @@ const intervalId = setInterval(function () {
   // Delete all user related information
   while (index !== -1) {
     index = invoiceWGKeysMap.findIndex((client) => {
-      // console.log(currentTime - client.timestamp);
+      // logDim(currentTime - client.timestamp);
       // Timeinterval in which Invoice Related Date is purged from the memory
       // in milliseconds
       const invoiceExpiry =
@@ -98,14 +96,13 @@ const intervalId = setInterval(function () {
 }, TIMERCLEANINGINVOICEDATA);
 
 // Telegram Bot
-
 // token looks like adsfasfdsf:adsfsadfasdfasfasdfasfd-asdfsf
 // chat_id looks like 1231231231
 const sayWithTelegram = async ({ message, parse_mode = "HTML" }) => {
   // parse_mode can be undefined, or 'MarkdownV2' or 'HTML'
   // https://core.telegram.org/bots/api#html-style
   let proxy = "";
-  if (TELEGRAM_PROXY_HOST != "" && TELEGRAM_PROXY_PORT != "") {
+  if (!!TELEGRAM_PROXY_HOST && !!TELEGRAM_PROXY_PORT) {
     proxy = `socks://${TELEGRAM_PROXY_HOST}:${TELEGRAM_PROXY_PORT}`;
   }
 
@@ -113,19 +110,18 @@ const sayWithTelegram = async ({ message, parse_mode = "HTML" }) => {
 
   const parseModeString = parse_mode ? `&parse_mode=${parse_mode}` : "";
   try {
-    let endpoint = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHATID}&text=${encodeURIComponent(
-      message
-    )}${parseModeString}`;
+    // prettier-ignore
+    let endpoint = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHATID}&text=${encodeURIComponent(message)}${parseModeString}`;
     let opts = new URL(endpoint);
-    if (proxy === "") {
-      logDim(`sayWithTelegram(${message})`);
-    } else {
+    if (proxy.length > 0) {
       opts.agent = new SocksProxyAgent(proxy);
+    } else {
+      logDim(`sayWithTelegram(${message})`);
     }
 
     const res = await fetch(opts);
     const fullResponse = await res.json();
-    // logDim(`${getDate()} sayWithTelegramBot() result:`, JSON.stringify(fullResponse, null, 2))
+    // logDim(`sayWithTelegramBot() result:`, JSON.stringify(fullResponse, null, 2))
     return fullResponse;
   } catch (e) {
     logDim(`sayWithTelegram() aborted:`, e);
@@ -135,7 +131,7 @@ const sayWithTelegram = async ({ message, parse_mode = "HTML" }) => {
 
 // Server Settings
 const createServer = require("http");
-const { response } = require("express");
+// const { response } = require("express");
 // const { rootCertificates } = require('tls');
 const httpServer = createServer.createServer(app);
 const io = require("socket.io")(httpServer, {
@@ -196,6 +192,7 @@ app.post(process.env.WEBHOOK, (req, res) => {
             const serverDNS = getServer(country)
               .replace(/^https?:\/\//, "")
               .replace(/\/manager\/$/, "");
+
             sayWithTelegram({
               // prettier-ignore
               message: `🟢 New Subscription: 🍾\n Price: ${priceDollar}\$\n ServerLocation: ${serverDNS}\n Sats: ${Math.round(amountSats)}💰`,
@@ -260,7 +257,7 @@ app.post(process.env.WEBHOOK_UPDATE_SUB, (req, res) => {
           serverURL,
         })
           .then((result) => {
-            console.log(result.subscriptionEnd);
+            logDim(result.subscriptionEnd);
             newSubscriptionEnd({
               keyID,
               subExpiry: getTimeStamp(
@@ -306,11 +303,11 @@ app.post(process.env.WEBHOOK_UPDATE_SUB, (req, res) => {
 });
 
 httpServer.listen(process.env.PORT, "0.0.0.0");
-console.log(`${getDate()} httpServer listening on port ${process.env.PORT}`);
+logDim(`httpServer listening on port ${process.env.PORT}`);
 
 // Socket Connections
 io.on("connection", (socket) => {
-  console.log(`${getDate()} ${socket.id} io.socket: connected`);
+  logDim(`${socket.id} io.socket: connected`);
 
   // Checks for a paid Invoice after reconnection of the client
   // To allow for recovery in calse the client looses connection but pays the invoice
@@ -444,7 +441,7 @@ io.on("connection", (socket) => {
             tag: payload.isRenew ? "Update Subscription" : "New Subscription",
           });
 
-          DEBUG && console.log(invoiceWGKeysMap);
+          DEBUG && logDim(invoiceWGKeysMap);
         } catch (error) {
           logDim(error.message);
         }
@@ -457,9 +454,8 @@ io.on("connection", (socket) => {
   });
 
   // New Listening events for UpdateSubscription Request
-
   socket.on("checkKeyDB", async ({ publicKey /*, serverURL */ }) => {
-    console.log(publicKey /*, serverURL*/);
+    logDim(publicKey /*, serverURL*/);
 
     let keyID;
     let subscriptionEnd;
@@ -478,7 +474,7 @@ io.on("connection", (socket) => {
 
     for (const serverURL of servers) {
       if (!success) {
-        console.log(`server: ${serverURL.domain}`);
+        logDim(`server: ${serverURL.domain}`);
         let country = serverURL.country;
         let domain = serverURL.domain;
         await getKey({ publicKey, serverURL: domain })
@@ -490,7 +486,7 @@ io.on("connection", (socket) => {
               serverURL: domain,
             })
               .then((result) => {
-                console.log(result);
+                logDim(result);
                 // let unixTimestamp = Date.parse(result.subscriptionEnd);
                 // let date = new Date(unixTimestamp);
                 let unixTimestamp = parseBackendDate(result.subscriptionEnd);
@@ -517,33 +513,21 @@ io.on("connection", (socket) => {
             //socket.emit("receiveKeyLookup", "key not found");
           });
 
+        // exit early if key was found
         if (success) break;
       }
     }
 
     if (!success) {
       // key was not found on any server
-      console.log(`emitting 'receiveKeyLookup': no key found`);
+      logDim(`emitting 'receiveKeyLookup': no key found`);
       socket.emit("receiveKeyLookup", null);
     }
   });
 
-  /*
-  socket.on("getServer", (country) => {
-    logDim(`getServer() called id: ${socket.id}`);
-    server = getServer(country);
-    socket.emit(
-      "receiveServer",
-      server.replace(/^https?:\/\//, "").replace(/\/manager\/$/, "")
-    );
-  });
-  */
-
   // send mail
   socket.on("sendEmail", (emailAddress, configData, date) => {
-    sendEmail(emailAddress, configData, date).then((result) =>
-      console.log(result)
-    );
+    sendEmail(emailAddress, configData, date).then((result) => logDim(result));
   });
 
   // getPrice
@@ -587,7 +571,7 @@ io.on("connection", (socket) => {
 
   // disconnect
   socket.on("disconnect", () => {
-    console.log(`User disconnected with ID: ${socket.id} `);
+    logDim(`User disconnected with ID: ${socket.id} `);
   });
 });
 
@@ -867,17 +851,19 @@ async function checkInvoice(hash) {
       if (response.data.paid) {
         return response.data.details.payment_hash;
       }
-      logDim(`Error - Invoice not paid ${hash}`);
+      logDim(`checkInvoice: error - invoice not paid ${hash}`);
       return null;
     })
     .catch((error) => {
-      logDim(`Error - fetching Invoice from Lnbits failed\n ${error.message}`);
+      logDim(
+        `checkInvoice: error - fetching Invoice from LNbits failed with: \n ${error.message}`
+      );
       return null;
     });
 }
 
 async function getKey({ publicKey, serverURL }) {
-  console.log(publicKey, serverURL);
+  logDim(publicKey, serverURL);
   return axios({
     method: "get",
     url: `https://${serverURL}/manager/key`,
@@ -893,25 +879,25 @@ async function getKey({ publicKey, serverURL }) {
           return publicKey === keyEntry.PublicKey;
         });
         if (keyDBInfo.length != 1) {
-          logDim("Error - Key not in Database");
+          logDim("getKey: error - key not in database");
           return null;
         }
         return keyDBInfo[0];
       } else {
-        logDim("Server Error - Status 500");
+        logDim("getKey: server error - status 500");
         return null;
       }
     })
     .catch((error) => {
-      logDim("getKey()", error.message);
+      logDim("getKey: ", error.message);
       return null;
     });
 }
 
 async function newSubscriptionEnd({ keyID, subExpiry, serverURL, publicKey }) {
   DEBUG &&
-    console.log(
-      `New Subscription Data:`,
+    logDim(
+      `newSubscriptionEnd: new subscription data: `,
       keyID,
       subExpiry,
       serverURL,
@@ -936,7 +922,7 @@ async function newSubscriptionEnd({ keyID, subExpiry, serverURL, publicKey }) {
     },
   };
 
-  console.log(request1);
+  logDim(request1);
 
   const response1 = await axios(request1).catch((error) => {
     logDim("newSubscriptionEnd()- update subscription expiry", error.message);
@@ -998,12 +984,13 @@ async function getSubscription({ keyID, serverURL }) {
       return response.data;
     })
     .catch((error) => {
-      console.log(keyID, serverURL);
-      logDim("getSubscription()", error.message);
+      logDim("getSubscription(): ", keyID, serverURL);
+      logDim("getSubscription(): ", error.message);
       return null;
     });
 }
 
+// return authentication key for specified server
 const getAuth = (serverURL) => {
   if (
     serverURL.includes("br1") ||
