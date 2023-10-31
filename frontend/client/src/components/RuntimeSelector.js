@@ -1,5 +1,6 @@
 import React from "react";
 import { ToggleButtonGroup, ToggleButton } from "react-bootstrap";
+import { useState } from "react";
 
 // Env Variables to have the same code base main and dev
 const REACT_APP_ONE_MONTH = process.env.REACT_APP_ONE_MONTH || 3.0;
@@ -19,8 +20,9 @@ const RuntimeSelector = (props) => {
           selection: 2,
         })}
       >
-        <ToggleButton
+        <ToggleButton          
           id="tbg-radio-1"
+          className="untoggled-button"
           variant="secondary"
           value={JSON.stringify({
             priceDollar: REACT_APP_ONE_MONTH,
@@ -32,6 +34,7 @@ const RuntimeSelector = (props) => {
         </ToggleButton>
         <ToggleButton
           id="tbg-radio-2"
+          className="untoggled-button"
           variant="secondary"
           value={JSON.stringify({
             priceDollar: REACT_APP_THREE_MONTHS,
@@ -43,6 +46,7 @@ const RuntimeSelector = (props) => {
         </ToggleButton>
         <ToggleButton
           id="tbg-radio-3"
+          className="untoggled-button"
           variant="secondary"
           value={JSON.stringify({
             priceDollar: REACT_APP_SIX_MONTHS,
@@ -54,6 +58,7 @@ const RuntimeSelector = (props) => {
         </ToggleButton>
         <ToggleButton
           id="tbg-radio-4"
+          className="untoggled-button"
           variant="secondary"
           value={JSON.stringify({
             priceDollar: REACT_APP_ONE_YEAR,

@@ -108,7 +108,7 @@ a:active {
 }
 
 .btn_:active {
-  background: #aaaaaa;
+  background: #ffc700;
 }
 
 #paid_button {
@@ -184,6 +184,11 @@ title {
 #countryselector label {
   width: 20%;
 }
+
+#countryselector label.btn.active {
+  background-color: #ffc700;
+  color: black;
+}
 */
 
 #runtimeselector {
@@ -194,14 +199,19 @@ title {
   text-align: center;
   width: 25%;
 }
+/*
 #runtimeselector label.btn.active {
   background-color: #ffc700;
   color: black;
 }
+*/
 
-#countryselector label.btn.active {
+.untoggled-button {
+  color: #777777;
+  background-color: #000000;
+}
+.untoggled-button {
   background-color: #ffc700;
-  color: black;
 }
 
 #invoicestring {
