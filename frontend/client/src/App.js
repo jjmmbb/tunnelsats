@@ -817,7 +817,7 @@ function App() {
                                               satsPerDollar *
                                               discount
                                         )
-                                      )
+                                      ).toLocaleString()
                                     : Math.trunc(
                                         Math.round(priceDollar * satsPerDollar)
                                       ).toLocaleString()}{" "}
@@ -960,7 +960,7 @@ function App() {
                                     priceDollar * satsPerDollar -
                                       priceDollar * satsPerDollar * discount
                                   )
-                                )
+                                ).toLocaleString()
                               : Math.trunc(
                                   Math.round(priceDollar * satsPerDollar)
                                 ).toLocaleString()}{" "}
