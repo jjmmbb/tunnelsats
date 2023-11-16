@@ -705,7 +705,11 @@ function App() {
           <Row>
             <Col>
               {/* Logo */}
-              <img src={discount != 1.0 ? logo_bf : logo} alt="" className="logo" />
+              <img
+                src={discount != 1.0 ? logo_bf : logo}
+                alt=""
+                className="logo"
+              />
 
               {/* Intro Text */}
               <HeaderInfo stats={nodeStats} />
@@ -871,7 +875,14 @@ function App() {
                         keyPair.publicKey,
                         keyPair.presharedKey,
                         country,
-                        discount,
+                        discount != 1.0
+                          ? Math.trunc(
+                              Math.round(
+                                priceDollar * satsPerDollar -
+                                  priceDollar * satsPerDollar * discount
+                              )
+                            )
+                          : Math.trunc(Math.round(priceDollar * satsPerDollar)),
                         // renewsubscription
                         true,
                         keyID
@@ -980,7 +991,16 @@ function App() {
                           keyPair.publicKey,
                           keyPair.presharedKey,
                           country,
-                          discount
+                          discount != 1.0
+                            ? Math.trunc(
+                                Math.round(
+                                  priceDollar * satsPerDollar -
+                                    priceDollar * satsPerDollar * discount
+                                )
+                              )
+                            : Math.trunc(
+                                Math.round(priceDollar * satsPerDollar)
+                              )
                         );
                         showInvoiceModal();
                         hideConfigModal();
