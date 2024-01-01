@@ -251,7 +251,7 @@ const WorldMap = (props) => {
             </Popover>
           }
         >
-          {/* circle NBG */}
+          {/* circle FFM */}
           <circle
             cx="305"
             cy="72"
@@ -259,7 +259,7 @@ const WorldMap = (props) => {
             fill="#cc0000"
             id="EU"
             className={getClassname(["eu", "eu2", "eu3"])}
-            onClick={onMapClick.bind(this, "eu3")}
+            onClick={onMapClick.bind(this, "eu2")}
           />
         </OverlayTrigger>
 

@@ -174,8 +174,8 @@ function App() {
   // get selected country infos
   const getSelectedRegionString = (country) => {
     switch (country) {
-      case "eu3":
-        setSelectedRegionString(`🇩🇪  Nuremberg`);
+      case "eu2":
+        setSelectedRegionString(`🇩🇪  Frankfurt`);
         break;
       //case "af":
       //  setSelectedRegionString(`🇿🇦  Johannesburg`);
