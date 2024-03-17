@@ -844,7 +844,7 @@ table ip tunnelsatsv2 {
   #Allow Access via tailscale/zerotier
   	chain prerouting { 
 		type filter hook prerouting priority dstnat - 10; policy accept;
-		ip saddr ${dockertunnelsatsip} tcp sport { 8080, 10009 } fib daddr type != local meta mark set 0x00001111 counter
+		ip saddr ${dockertunnelsatsip} tcp sport { 8080, 10009 } ip daddr != ${localsubnet} meta mark set 0x00001111 counter
 	}
 
 }" >/etc/nftables.conf
@@ -1193,7 +1193,7 @@ echo
 if [ "$lnImplementation" == "lnd" ]; then
   if [ "$isUmbrel" != "1" ]; then
 
-  echo "LND:
+    echo "LND:
 
 Before editing, please create a backup of your current LND config file.
 Then edit and add or modify the following lines. Please note that
@@ -1208,9 +1208,9 @@ externalhosts=${vpnExternalDNS}:${vpnExternalPort}
 tor.streamisolation=false
 tor.skip-proxy-for-clearnet-targets=true
 #########################################"
-  echo
-    else
-  echo "LND on Umbrel 0.5+:
+    echo
+  else
+    echo "LND on Umbrel 0.5+:
 
 Make a backup and then edit /home/umbrel/umbrel/app-data/lightning/data/lnd/lnd.conf 
 to add or modify the below lines.
@@ -1232,7 +1232,7 @@ externalhosts=${vpnExternalDNS}:${vpnExternalPort}
 tor.streamisolation=false
 tor.skip-proxy-for-clearnet-targets=true
 #########################################"
-  echo
+    echo
   fi
 fi
 
