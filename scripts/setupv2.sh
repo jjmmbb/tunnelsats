@@ -1325,14 +1325,11 @@ ______________________________________________________________________"
 Make a backup and then edit ~/umbrel/app-data/lightning/data/lnd/lnd.conf 
 to add or modify the below lines.
 
-There are a few hybrid settings Umbrel implements to the UI, please follow these steps:
-- in the Umbrel GUI, navigate to the LND advanced settings
+There are a few hybrid settings Umbrel implements to the UI. Please navigate to Umbrel GUI > LND advanced
 - validate which of the below settings are activated already
-- leave those activated as they are
 - don't add those settings in your custom lnd.conf again to avoid duplication
-
-Example: in case tor.streamisolation and tor.skip-proxy-for-clearnet-targets is already 
-activated in the UI, skip the [Tor] section completely and only add externalhosts. 
+Example: tor.streamisolation and tor.skip-proxy-for-clearnet-targets is already 
+activated in the UI, skip the [Tor] section in your lnd.conf. 
 
 ______________________________________________________________________
 [Application Options]
@@ -1341,7 +1338,6 @@ externalhosts=${vpnExternalDNS}:${vpnExternalPort}
 tor.streamisolation=false
 tor.skip-proxy-for-clearnet-targets=true
 ______________________________________________________________________"
-    echo
   fi
 fi
 
@@ -1425,8 +1421,8 @@ VPN setup completed - Welcome to Tunnel⚡Sats!
 
 - Check your clearnet connection functionality and speed: https://t.me/TunnelSatsBot
 - Join our Telegram Group https://t.me/tunnelsats and our guide https://guide.tunnelsats.com
-- Add a reminder on your subscription expiration date: https://t.me/TunnelSatsReminderBot"
-- Feel free to join the Amboss Community: https://amboss.space/community/29db5f25-24bb-407e-b752-be69f9431071
+- Add a reminder on your subscription expiration date: https://t.me/TunnelSatsReminderBot
+- Feel free to join the Amboss Community: https://amboss.space/community/29db5f25-24bb-407e-b752-be69f9431071"
 echo
 
 if [ $isDocker -eq 0 ]; then
