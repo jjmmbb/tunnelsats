@@ -1247,7 +1247,6 @@ if [ $isDocker -eq 0 ]; then
     echo "> Tunnel is  active ✅
     Your ISP external IP: ${ipHome}
     Your Tunnelsats external IP: ${ipVPN}"
-    echo
   else
     echo "> ERR: Tunnelsats VPN Interface not successfully activated, check debug logs"
     echo
@@ -1294,7 +1293,6 @@ sleep 2
 # Instructions
 vpnExternalDNS=$(grep "Endpoint" /etc/wireguard/tunnelsatsv2.conf | awk '{ print $3 }' | cut -d ":" -f1)
 echo "______________________________________________________________________
-
 These are your personal VPN credentials for your lightning configuration."
 echo
 
@@ -1312,14 +1310,14 @@ Then edit and add or modify the following lines. Please note that
 settings could already be part of your configuration file 
 and duplicated lines could lead to errors.
 
-#########################################
+______________________________________________________________________
 [Application Options]
 listen=0.0.0.0:9735
 externalhosts=${vpnExternalDNS}:${vpnExternalPort}
 [Tor]
 tor.streamisolation=false
 tor.skip-proxy-for-clearnet-targets=true
-#########################################"
+______________________________________________________________________"
     echo
   else
     echo "LND on Umbrel 0.5+:
@@ -1327,8 +1325,7 @@ tor.skip-proxy-for-clearnet-targets=true
 Make a backup and then edit ~/umbrel/app-data/lightning/data/lnd/lnd.conf 
 to add or modify the below lines.
 
-Important
-There are a few hybrid settings Umbrel's bringing to the UI, please do the following steps:
+There are a few hybrid settings Umbrel implements to the UI, please follow these steps:
 - in the Umbrel GUI, navigate to the LND advanced settings
 - validate which of the below settings are activated already
 - leave those activated as they are
@@ -1337,13 +1334,13 @@ There are a few hybrid settings Umbrel's bringing to the UI, please do the follo
 Example: in case tor.streamisolation and tor.skip-proxy-for-clearnet-targets is already 
 activated in the UI, skip the [Tor] section completely and only add externalhosts. 
 
-#########################################
+______________________________________________________________________
 [Application Options]
 externalhosts=${vpnExternalDNS}:${vpnExternalPort}
 [Tor]
 tor.streamisolation=false
 tor.skip-proxy-for-clearnet-targets=true
-#########################################"
+______________________________________________________________________"
     echo
   fi
 fi
@@ -1356,14 +1353,14 @@ Then edit and add or modify the following lines. Please note that
 settings could already be part of your configuration file 
 and duplicated lines could lead to errors.
 
-#########################################
+______________________________________________________________________
 [Application Options]
 #listen=0.0.0.0:9735
 externalhosts=${vpnExternalDNS}:${vpnExternalPort}
 [Tor]
 tor.streamisolation=false
 tor.skip-proxy-for-clearnet-targets=true
-#########################################"
+______________________________________________________________________"
   echo
 
 fi
@@ -1377,7 +1374,7 @@ Then edit and add or modify the following lines. Please note that
 settings could already be part of your configuration file
 and duplicated lines could lead to errors.
 
-###############################################################################
+______________________________________________________________________
 Umbrel 0.5+:
 create CLN config file 'config':
   $ sudo nano ~/umbrel/app-data/core-lightning/data/lightningd/bitcoin/config 
@@ -1397,7 +1394,7 @@ comment out 'bind-addr' parameter like so
    ...
    #- --bind-addr=\${APP_CORE_LIGHTNING_DAEMON_IP}:9735  
 
-###############################################################################"
+______________________________________________________________________"
 
     echo
 
@@ -1405,7 +1402,7 @@ comment out 'bind-addr' parameter like so
 
     echo "CLN:
 
-###############################################################################
+______________________________________________________________________
 Native CLN installation (config file):
 
   # Tor
@@ -1416,7 +1413,7 @@ Native CLN installation (config file):
   # VPN
   bind-addr=0.0.0.0:9735
   announce-addr=${vpnExternalDNS}:${vpnExternalPort}
-###############################################################################"
+______________________________________________________________________"
     echo
 
   fi
@@ -1424,15 +1421,12 @@ fi
 
 echo "Please save this info in a file or write them down for later use.
 
-A more detailed guide is available at: https://guide.tunnelsats.com
-Afterwards please restart LND / CLN / LIT for changes to take effect.
-VPN setup completed!
+VPN setup completed - Welcome to Tunnel⚡Sats!
 
-Welcome to Tunnel⚡Sats.
-- Feel free to join the Amboss Community: https://amboss.space/community/29db5f25-24bb-407e-b752-be69f9431071
 - Check your clearnet connection functionality and speed: https://t.me/TunnelSatsBot
-- Join our Telegram Group: https://t.me/tunnelsats
+- Join our Telegram Group https://t.me/tunnelsats and our guide https://guide.tunnelsats.com
 - Add a reminder on your subscription expiration date: https://t.me/TunnelSatsReminderBot"
+- Feel free to join the Amboss Community: https://amboss.space/community/29db5f25-24bb-407e-b752-be69f9431071
 echo
 
 if [ $isDocker -eq 0 ]; then
@@ -1442,18 +1436,18 @@ if [ $isDocker -eq 0 ]; then
   elif [ "${lnImplementation}" == "lit" ]; then
     serviceName="lit"
   fi
-  echo "Restart ${lnImplementation} afterwards via the command:
+  echo "For changes to take effect, restart ${lnImplementation} with the command:
     sudo systemctl restart ${serviceName}.service"
   echo
 else
   if [ -f /etc/systemd/system/umbrel-startup.service ]; then
-    echo "Restart Umbrel afterwards via the command:
+    echo "For changes to take effect, restart Umbrel Services with the command:
       sudo ~/umbrel/scripts/stop
       sudo ~/umbrel/scripts/start"
     echo
   fi
   if [ -f /etc/systemd/system/umbrel.service ]; then
-    echo "Restart Umbrel afterwards via the command:
+    echo "For changes to take effect, restart Umbrel Services with the command:
       sudo systemctl restart umbrel.service"
     echo
   fi
